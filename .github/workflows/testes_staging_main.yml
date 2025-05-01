@@ -1,4 +1,4 @@
-name: Deploy to Azure Web App - Staging (Main)
+name: Deploy Azure - Staging (Main)
 
 on:
   push:
@@ -21,6 +21,9 @@ jobs:
       - name: 📦 Instalar dependências do Django
         run: pip install -r requirements.txt
 
+      - name: 🧩 Aplicar migrações do banco de dados
+        run: python manage.py migrate
+
       - name: 🧪 Rodar testes Django
         run: python manage.py test
 
@@ -31,6 +34,11 @@ jobs:
 
       - name: 📦 Instalar dependências do Cypress
         run: npm install
+
+      - name: 🚀 Iniciar servidor Django para Cypress
+        run: |
+          nohup python manage.py runserver 127.0.0.1:8000 &
+          sleep 10
 
       - name: 🧪 Rodar testes Cypress
         run: npx cypress run --config-file cypress.config.js
