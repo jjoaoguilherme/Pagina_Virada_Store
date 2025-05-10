@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.db.models import Q
 from django.http import JsonResponse
-from .forms import RegistroUsuarioForm
+from .forms import RegistroUsuarioForm, PerfilForm
 from .models import Perfil, Livro, Categoria, Wishlist
 
 # ------------------------ AUTENTICAÇÃO ------------------------
@@ -66,6 +66,22 @@ def logout_usuario(request):
     messages.success(request, 'Você saiu da conta.')
     return redirect('home')
 
+@login_required
+def editar_perfil(request):
+    perfil = get_object_or_404(Perfil, usuario=request.user)
+
+    if request.method == 'POST':
+        form = PerfilForm(request.POST, instance=perfil)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Perfil atualizado com sucesso!")
+            return redirect('perfil_usuario')
+    else:
+        form = PerfilForm(instance=perfil)
+
+    return render(request, 'forum/editar_perfil.html', {'form': form})
+
+
 # ------------------------ PÁGINAS PÚBLICAS ------------------------
 
 def home(request):
@@ -117,6 +133,19 @@ def perfil_usuario(request):
     perfil = get_object_or_404(Perfil, usuario=request.user)
     return render(request, 'forum/perfil.html', {'perfil': perfil})
 
+@login_required
+def editar_perfil(request):
+    perfil = get_object_or_404(Perfil, usuario=request.user)
+    if request.method == 'POST':
+        form = PerfilForm(request.POST, instance=perfil)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Perfil atualizado com sucesso!')
+            return redirect('perfil_usuario')
+    else:
+        form = PerfilForm(instance=perfil)
+
+    return render(request, 'forum/editar_perfil.html', {'form': form})
 
 # ------------------------ CARRINHO ------------------------
 
@@ -232,3 +261,29 @@ def toggle_wishlist(request, livro_id):
 def wishlist(request):
     desejos = Wishlist.objects.filter(user=request.user)
     return render(request, 'forum/wishlist.html', {'desejos': desejos})
+
+# ------------------------ MEUS PEDIDOS ------------------------
+
+@login_required
+def meus_pedidos(request):
+    # Aqui você pode integrar com um modelo de pedidos real, se quiser
+    return render(request, 'forum/meus_pedidos.html')
+
+# ------------------------ PÁGINA DE AGRADECIMENTO ------------------------
+
+@login_required
+def obrigado(request):
+    return render(request, 'forum/obrigado.html')
+
+@login_required
+def rastrear_pedido(request, pedido_id):
+    from .models import Pedido, EventoPedido  # ou coloque no topo se preferir
+
+    pedido = get_object_or_404(Pedido, id=pedido_id, usuario=request.user)
+    eventos = EventoPedido.objects.filter(pedido=pedido).order_by('-data')
+
+    return render(request, 'forum/rastrear_pedido.html', {
+        'pedido': pedido,
+        'eventos': eventos,
+    })
+

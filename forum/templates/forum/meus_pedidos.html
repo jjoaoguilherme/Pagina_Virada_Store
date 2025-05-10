@@ -1,38 +1,80 @@
-{% extends 'base.html' %}
+# models.py
+from django.db import models
+from django.contrib.auth.models import User
 
-{% block content %}
-<div class="container mt-5">
-  <h2 class="mb-4">📦 Meus Pedidos</h2>
+class Livro(models.Model):
+    titulo = models.CharField(max_length=200)
+    preco = models.DecimalField(max_digits=8, decimal_places=2)
+    # outros campos como imagem, descricao etc
 
-  {% if pedidos %}
-    <div class="row">
-      {% for pedido in pedidos %}
-        <div class="col-md-6 mb-4">
-          <div class="card shadow-sm border-0">
-            <div class="card-header bg-primary text-white d-flex justify-content-between">
-              <span><strong>Pedido #{{ pedido.id }}</strong></span>
-              <small>{{ pedido.criado_em|date:"d/m/Y H:i" }}</small>
-            </div>
-            <div class="card-body">
-              <p class="mb-2"><strong>Total:</strong> R$ {{ pedido.total|floatformat:2 }}</p>
-              <ul class="list-group list-group-flush mb-3">
-                {% for item in pedido.itens.all %}
-                  <li class="list-group-item d-flex justify-content-between align-items-center">
-                    {{ item.quantidade }}x {{ item.livro.titulo }}
-                    <span class="text-muted">R$ {{ item.subtotal|floatformat:2 }}</span>
-                  </li>
-                {% endfor %}
-              </ul>
-              <a href="{% url 'rastrear_pedido' pedido.id %}" class="btn btn-outline-primary btn-sm">
-                Ver Rastreio
-              </a>
-            </div>
-          </div>
-        </div>
-      {% endfor %}
-    </div>
-  {% else %}
-    <div class="alert alert-info">Você ainda não fez nenhum pedido.</div>
-  {% endif %}
-</div>
-{% endblock %}
+class Pedido(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='pedidos')
+    total = models.DecimalField(max_digits=10, decimal_places=2)
+    criado_em = models.DateTimeField(auto_now_add=True)
+
+class ItemPedido(models.Model):
+    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, related_name='itens')
+    livro = models.ForeignKey(Livro, on_delete=models.CASCADE)
+    quantidade = models.PositiveIntegerField()
+
+    @property
+    def subtotal(self):
+        return self.livro.preco * self.quantidade
+
+class EventoPedido(models.Model):
+    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
+    descricao = models.CharField(max_length=255)
+    data = models.DateTimeField(auto_now_add=True)
+
+
+# views.py
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from .models import Pedido, EventoPedido
+
+@login_required
+def meus_pedidos(request):
+    pedidos = Pedido.objects.filter(usuario=request.user).order_by('-criado_em')
+    return render(request, 'forum/meus_pedidos.html', {'pedidos': pedidos})
+
+@login_required
+def rastrear_pedido(request, pedido_id):
+    pedido = get_object_or_404(Pedido, id=pedido_id, usuario=request.user)
+    eventos = EventoPedido.objects.filter(pedido=pedido).order_by('-data')
+    return render(request, 'forum/rastrear_pedido.html', {
+        'pedido': pedido,
+        'eventos': eventos
+    })
+
+
+# urls.py (forum app)
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    # ... outras rotas
+    path('meus-pedidos/', views.meus_pedidos, name='meus_pedidos'),
+    path('rastrear-pedido/<int:pedido_id>/', views.rastrear_pedido, name='rastrear_pedido'),
+]
+
+
+# templates/forum/rastrear_pedido.html
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Rastrear Pedido</title>
+</head>
+<body>
+    <h2>📦 Rastreio do Pedido #{{ pedido.id }}</h2>
+    {% if eventos %}
+        <ul>
+        {% for evento in eventos %}
+            <li><strong>{{ evento.data|date:"d/m/Y H:i" }}:</strong> {{ evento.descricao }}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Este pedido ainda não possui eventos de rastreio.</p>
+    {% endif %}
+</body>
+</html>

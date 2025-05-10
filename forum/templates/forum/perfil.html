@@ -37,6 +37,8 @@
           <p><strong>CPF:</strong> {{ perfil.cpf }}</p>
           <p><strong>Endereço:</strong> {{ perfil.endereco }}</p>
           <p><strong>Data de Nascimento:</strong> {{ perfil.data_nascimento|date:"d/m/Y" }}</p>
+          <a href="{% url 'editar_perfil' %}" class="btn btn-outline-primary btn-sm">Editar Perfil</a>
+
         </div>
       </div>
     </div>

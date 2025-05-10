@@ -1,4 +1,3 @@
-{# home.html #}
 {% extends 'base.html' %}
 {% load static %}
 
@@ -6,157 +5,78 @@
 
 {% block content %}
 
-  {# Mensagens de feedback #}
-  {% if messages %}
-    <div class="container mt-3">
-      {% for message in messages %}
-        {% if message.tags == "success" %}
-          <div class="alert alert-success" role="alert">
-            {{ message }}
-          </div>
-        {% endif %}
-      {% endfor %}
-    </div>
-  {% endif %}
-
-  {# MENU SUPERIOR (branco) – se ainda quiser mantê-lo abaixo da navbar escura #}
-  <div class="bg-white py-3 px-3 shadow-sm">
-    <div class="container d-flex align-items-center gap-5 flex-wrap">
-      <a href="#" class="d-flex align-items-center text-decoration-none" style="color: #5ba3af;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#5ba3af" class="me-2" viewBox="0 0 16 16">
-          <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 2.5 4h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 4.5z"/>
-        </svg>
-        <span style="font-size: 1.5rem;">Categoria</span>
-      </a>
-
-<<<<<<< HEAD
 <!-- MENSAGENS -->
 {% if messages %}
   <div class="container mt-3">
     {% for message in messages %}
       <div class="alert alert-{{ message.tags }}">{{ message }}</div>
     {% endfor %}
-=======
-      <a href="{% url 'home' %}" class="text-dark text-decoration-none fs-5">Home</a>
-      <a href="{% url 'mais_vendidos' %}" class="text-dark text-decoration-none fs-5">Mais Vendidos</a>
-      <a href="{% url 'ver_recomendados' %}" class="text-dark text-decoration-none fs-5">Recomendados</a>
-
-      {% if user.is_authenticated %}
-        <a href="{% url 'wishlist' %}" class="text-dark text-decoration-none fs-5">Lista de Desejos</a>
-      {% endif %}
-    </div>
->>>>>>> 05a3ad886d5448316bb067c7f517a902c89839fd
   </div>
+{% endif %}
 
-<<<<<<< HEAD
-
-<!-- MENU PRINCIPAL -->
-<div class="bg-white py-3 px-3 shadow-sm">
-  <div class="container d-flex align-items-center gap-4 flex-wrap">
-    <a href="#" class="d-flex align-items-center text-decoration-none" style="color: #5ba3af;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#5ba3af" class="me-2" viewBox="0 0 16 16">
-        <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 2.5 4h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 4.5z"/>
-      </svg>
-      <span style="font-size: 1.5rem;">Categoria</span>
-    </a>
-
-    <a href="{% url 'home' %}" class="text-dark text-decoration-none fs-5">Home</a>
-    <a href="{% url 'mais_vendidos' %}" class="text-dark text-decoration-none fs-5">Mais Vendidos</a>
-    <a href="{% url 'ver_recomendados' %}" class="text-dark text-decoration-none fs-5">Recomendados</a>
-    
-    {% if user.is_authenticated %}
-      <a href="{% url 'wishlist' %}" class="text-dark text-decoration-none fs-5">Lista de Desejos</a>
-    {% endif %}
-
-   <!-- BOTÕES À DIREITA -->
-<div class="ms-auto d-flex align-items-center gap-2">
-  {% if user.is_authenticated %}
-    <a href="{% url 'perfil_usuario' %}" title="Meu Perfil">
-      <i class="bi bi-person-circle fs-4 text-dark"></i>
-    </a>
-    <span class="me-2">Olá, {{ user.username }}!</span>
-    <a href="{% url 'logout' %}" class="btn btn-outline-secondary btn-sm">Sair</a>
-  {% else %}
-    <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm">Entrar</a>
-    <a href="{% url 'registrar' %}" class="btn btn-primary btn-sm">Criar Conta</a>
-  {% endif %}
-</div>
 
 <!-- BANNER -->
 <div class="container my-4">
-=======
-  {# BANNER #}
-  <div class="container my-4">
->>>>>>> 05a3ad886d5448316bb067c7f517a902c89839fd
-    <div class="rounded overflow-hidden shadow-sm border">
-      <img src="{% static 'forum/img/banner01.png' %}"
-           alt="Banner de Ofertas"
-           class="img-fluid d-block mx-auto"
-           style="max-height: 400px; object-fit: cover; width: 100%;">
-    </div>
+  <div class="rounded overflow-hidden shadow-sm border">
+    <img src="{% static 'forum/img/banner01.png' %}" alt="Banner de Ofertas"
+         class="img-fluid d-block mx-auto"
+         style="max-height: 400px; object-fit: cover; width: 100%;">
   </div>
+</div>
 
-<<<<<<< HEAD
 <!-- CONTEÚDO PRINCIPAL -->
 <main class="flex-grow-1">
   <div class="container mt-4">
     <h2 class="mb-4">Mais Vendidos &gt;</h2>
     <div class="row row-cols-2 row-cols-md-5 g-3 mb-4">
-=======
-  {# CONTEÚDO PRINCIPAL #}
-  <main>
-    <div class="container mt-4">
-      <h2 class="mb-4">Mais Vendidos &gt;</h2>
-      <div class="row row-cols-2 row-cols-md-5 g-3 mb-4">
->>>>>>> 05a3ad886d5448316bb067c7f517a902c89839fd
-        {% for livro in mais_vendidos %}
-          <div class="col">
-            <div class="card h-100 position-relative">
-              <div class="position-absolute top-0 start-0">
-                <div class="ranking-flag">#{{ forloop.counter }}</div>
-              </div>
-              <img src="{{ livro.imagem }}" class="card-img-top" alt="{{ livro.titulo }}">
-              <div class="card-body text-center">
-                <h6 class="card-title mb-1">{{ livro.titulo }}</h6>
-                <p class="text-success fw-bold">R$ {{ livro.preco }}</p>
-                <a href="{% url 'detalhes_livro' livro.id %}" class="btn btn-sm btn-outline-secondary mt-2">Ver Detalhes</a>
-              </div>
+      {% for livro in mais_vendidos %}
+        <div class="col">
+          <div class="card h-100 position-relative">
+            <div class="position-absolute top-0 start-0">
+              <div class="ranking-flag bg-primary text-white fw-bold px-2 py-1 rounded-end">#{{ forloop.counter }}</div>
+            </div>
+            <img src="{{ livro.imagem }}" class="card-img-top" alt="{{ livro.titulo }}">
+            <div class="card-body text-center">
+              <h6 class="card-title mb-1">{{ livro.titulo }}</h6>
+              <p class="text-success fw-bold">R$ {{ livro.preco }}</p>
+              <a href="{% url 'detalhes_livro' livro.id %}" class="btn btn-sm btn-outline-secondary mt-2">Ver Detalhes</a>
             </div>
           </div>
-        {% endfor %}
-      </div>
-
-      <div class="text-center mb-5">
-        <a href="{% url 'mais_vendidos' %}" class="text-primary fw-bold">Ver mais &gt;</a>
-      </div>
-
-      <h2 class="mb-4">Recomendações &gt;</h2>
-      <div class="row row-cols-2 row-cols-md-5 g-3 mb-4">
-        {% for livro in ver_recomendados %}
-          <div class="col">
-            <div class="card h-100 position-relative">
-              <div class="position-absolute top-0 start-0">
-                <div class="ranking-flag">#{{ forloop.counter }}</div>
-              </div>
-              <img src="{{ livro.imagem }}" class="card-img-top" alt="{{ livro.titulo }}">
-              <div class="card-body text-center">
-                <h6 class="card-title mb-1">{{ livro.titulo }}</h6>
-                <p class="text-success fw-bold">R$ {{ livro.preco }}</p>
-                <a href="{% url 'detalhes_livro' livro.id %}" class="btn btn-sm btn-outline-secondary mt-2">Ver Detalhes</a>
-              </div>
-            </div>
-          </div>
-        {% endfor %}
-      </div>
-
-      <div class="text-center mb-5">
-        <a href="{% url 'ver_recomendados' %}" class="text-primary fw-bold">Ver mais &gt;</a>
-      </div>
-
-      <div class="text-center mt-5">
-        <a href="{% url 'categorias' %}" class="btn btn-primary">Ver Categorias de Livros</a>
-      </div>
+        </div>
+      {% endfor %}
     </div>
-  </main>
+
+    <div class="text-center mb-5">
+      <a href="{% url 'mais_vendidos' %}" class="text-primary fw-bold">Ver mais &gt;</a>
+    </div>
+
+    <h2 class="mb-4">Recomendações &gt;</h2>
+    <div class="row row-cols-2 row-cols-md-5 g-3 mb-4">
+      {% for livro in ver_recomendados %}
+        <div class="col">
+          <div class="card h-100 position-relative">
+            <div class="position-absolute top-0 start-0">
+              <div class="ranking-flag bg-success text-white fw-bold px-2 py-1 rounded-end">#{{ forloop.counter }}</div>
+            </div>
+            <img src="{{ livro.imagem }}" class="card-img-top" alt="{{ livro.titulo }}">
+            <div class="card-body text-center">
+              <h6 class="card-title mb-1">{{ livro.titulo }}</h6>
+              <p class="text-success fw-bold">R$ {{ livro.preco }}</p>
+              <a href="{% url 'detalhes_livro' livro.id %}" class="btn btn-sm btn-outline-secondary mt-2">Ver Detalhes</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mb-5">
+      <a href="{% url 'ver_recomendados' %}" class="text-primary fw-bold">Ver mais &gt;</a>
+    </div>
+
+    <div class="text-center mt-5">
+      <a href="{% url 'categorias' %}" class="btn btn-primary">Ver Categorias de Livros</a>
+    </div>
+  </div>
+</main>
 
 {% endblock %}
