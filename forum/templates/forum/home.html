@@ -1,68 +1,44 @@
-{% extends 'base.html' %}
+{% extends 'base/base.html' %}
 {% load static %}
 
-<<<<<<< Updated upstream
 {% block title %}Página Virada Store{% endblock %}
 
-{% block content %}
-=======
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-        }
-        .card img { height: 300px; object-fit: cover; }
-        footer {
-            background-color: #212529; color: white; text-align: center;
-            padding: 20px 0; width: 100%;
-        }
-        .ranking-flag {
-            background-color: #fe8d29; color: white; font-weight: bold;
-            width: 36px; height: 50px; font-size: 14px;
-            display: flex; align-items: center; justify-content: center;
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%);
-        }
-        /* ▼ Mostra dropdown ao passar o mouse */
-        .dropdown:hover>.dropdown-menu { display: block; margin-top: 0; }
-        .dropdown-toggle::after { display: none; }
-    </style>
-</head>
-<body class="d-flex flex-column min-vh-100">
->>>>>>> Stashed changes
+{% block extra_css %}
+  <style>
+    .card img { height: 300px; object-fit: cover; }
+    .ranking-flag {
+      background-color: #fe8d29;
+      color: #fff;
+      font-weight: bold;
+      width: 36px; height: 50px; font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%);
+    }
+    /* Abre dropdown ao passar o mouse */
+    .dropdown:hover>.dropdown-menu { display:block; margin-top:0; }
+    .dropdown-toggle::after { display:none; }
+  </style>
+{% endblock %}
 
-<!-- MENSAGENS -->
+{% block content %}
+
+<!-- MENSAGENS FLASH -->
 {% if messages %}
   <div class="container mt-3">
     {% for message in messages %}
-<<<<<<< Updated upstream
       <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-=======
-      {% if message.tags == "success" %}
-        <div class="alert alert-success" role="alert">{{ message }}</div>
-      {% endif %}
->>>>>>> Stashed changes
     {% endfor %}
   </div>
 {% endif %}
 
-<<<<<<< Updated upstream
-=======
-<!-- NAVBAR GLOBAL -->
-{% include "global/partials/navmenu.html" %}
-
 <!-- MENU SUPERIOR (Categorias + Links principais) -->
-<div class="bg-white py-3 px-3 shadow-sm">
+<div class="bg-white py-3 shadow-sm">
   <div class="container d-flex align-items-center gap-5 flex-wrap">
-
     <!-- Dropdown de Categorias -->
     <div class="dropdown">
       <a class="btn btn-outline-secondary d-flex align-items-center dropdown-toggle" href="#" id="dropdownCategorias" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:#5ba3af;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#5ba3af" class="me-2" viewBox="0 0 16 16">
-          <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 2.5 4h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 4.5z"/>
-        </svg>
-        <span style="font-size: 1.5rem;">Categorias</span>
+        <i class="bi bi-list me-2" style="font-size:20px;"></i>
+        <span class="fs-4">Categorias</span>
       </a>
       <ul class="dropdown-menu border-0 shadow-sm" aria-labelledby="dropdownCategorias">
         {% for cat in categorias %}
@@ -78,111 +54,54 @@
     <a href="{% url 'ver_recomendados' %}" class="text-dark text-decoration-none fs-5">Recomendados</a>
   </div>
 </div>
->>>>>>> Stashed changes
 
 <!-- BANNER -->
 <div class="container my-4">
   <div class="rounded overflow-hidden shadow-sm border">
-<<<<<<< Updated upstream
-    <img src="{% static 'forum/img/banner01.png' %}" alt="Banner de Ofertas"
-         class="img-fluid d-block mx-auto"
-         style="max-height: 400px; object-fit: cover; width: 100%;">
-=======
-    <img src="{% static 'forum/img/banner01.png' %}" alt="Banner de Ofertas" class="img-fluid d-block mx-auto" style="max-height:400px;object-fit:cover;width:100%;">
->>>>>>> Stashed changes
+    <img src="{% static 'forum/img/banner01.png' %}" class="img-fluid d-block w-100" style="max-height:400px;object-fit:cover;" alt="Banner de Ofertas">
   </div>
 </div>
 
-<!-- CONTEÚDO PRINCIPAL -->
-<main class="flex-grow-1">
-  <div class="container mt-4">
-    <h2 class="mb-4">Mais Vendidos &gt;</h2>
-    <div class="row row-cols-2 row-cols-md-5 g-3 mb-4">
-      {% for livro in mais_vendidos %}
-        <div class="col">
-          <div class="card h-100 position-relative">
-<<<<<<< Updated upstream
-            <div class="position-absolute top-0 start-0">
-              <div class="ranking-flag bg-primary text-white fw-bold px-2 py-1 rounded-end">#{{ forloop.counter }}</div>
-            </div>
-            <img src="{{ livro.imagem }}" class="card-img-top" alt="{{ livro.titulo }}">
-            <div class="card-body text-center">
-              <h6 class="card-title mb-1">{{ livro.titulo }}</h6>
-              <p class="text-success fw-bold">R$ {{ livro.preco }}</p>
-              <a href="{% url 'detalhes_livro' livro.id %}" class="btn btn-sm btn-outline-secondary mt-2">Ver Detalhes</a>
-            </div>
+<!-- MAIS VENDIDOS -->
+<div class="container mt-4">
+  <h2 class="mb-4">Mais Vendidos &gt;</h2>
+  <div class="row row-cols-2 row-cols-md-5 g-3 mb-4">
+    {% for livro in mais_vendidos %}
+      <div class="col">
+        <div class="card h-100 position-relative">
+          <div class="position-absolute top-0 start-0"><div class="ranking-flag">#{{ forloop.counter }}</div></div>
+          <img src="{{ livro.imagem }}" class="card-img-top" alt="{{ livro.titulo }}" style="height:200px;object-fit:cover;">
+          <div class="card-body text-center">
+            <h6 class="card-title mb-1">{{ livro.titulo }}</h6>
+            <p class="text-success fw-bold">R$ {{ livro.preco }}</p>
+            <a href="{% url 'detalhes_livro' livro.id %}" class="btn btn-sm btn-outline-secondary mt-2">Ver Detalhes</a>
           </div>
         </div>
-      {% endfor %}
-    </div>
-
-    <div class="text-center mb-5">
-      <a href="{% url 'mais_vendidos' %}" class="text-primary fw-bold">Ver mais &gt;</a>
-=======
-            <div class="position-absolute top-0 start-0"><div class="ranking-flag">#{{ forloop.counter }}</div></div>
-            <img src="{{ livro.imagem }}" class="card-img-top" alt="{{ livro.titulo }}" style="height:200px;object-fit:cover;">
-            <div class="card-body text-center">
-              <h6 class="card-title mb-1">{{ livro.titulo }}</h6>
-              <p class="text-success fw-bold">R$ {{ livro.preco }}</p>
-              <a href="{% url 'detalhes_livro' livro.id %}" class="btn btn-sm btn-outline-secondary mt-2">Ver Detalhes</a>
-            </div>
-          </div>
-        </div>
-      {% endfor %}
->>>>>>> Stashed changes
-    </div>
-    <div class="text-center mb-5"><a href="{% url 'mais_vendidos' %}" class="text-primary fw-bold">Ver mais &gt;</a></div>
-
-    <h2 class="mb-4">Recomendações &gt;</h2>
-    <div class="row row-cols-2 row-cols-md-5 g-3 mb-4">
-      {% for livro in ver_recomendados %}
-        <div class="col">
-          <div class="card h-100 position-relative">
-<<<<<<< Updated upstream
-            <div class="position-absolute top-0 start-0">
-              <div class="ranking-flag bg-success text-white fw-bold px-2 py-1 rounded-end">#{{ forloop.counter }}</div>
-            </div>
-            <img src="{{ livro.imagem }}" class="card-img-top" alt="{{ livro.titulo }}">
-            <div class="card-body text-center">
-              <h6 class="card-title mb-1">{{ livro.titulo }}</h6>
-              <p class="text-success fw-bold">R$ {{ livro.preco }}</p>
-              <a href="{% url 'detalhes_livro' livro.id %}" class="btn btn-sm btn-outline-secondary mt-2">Ver Detalhes</a>
-            </div>
-=======
-            <div class="position-absolute top-0 start-0"><div class="ranking-flag">#{{ forloop.counter }}</div></div>
-            <img src="{{ livro.imagem }}" class="card-img-top" alt="{{ livro.titulo }}" style="height:200px;object-fit:cover;">
-            <div class="card-body text-center">
-              <h6 class="card-title mb-1">{{ livro.titulo }}</h6>
-              <p class="text-success fw-bold">R$ {{ livro.preco }}</p>
-              <a href="{% url 'detalhes_livro' livro.id %}" class="btn btn-sm btn-outline-secondary mt-2">Ver Detalhes</a>
-            </div>
->>>>>>> Stashed changes
-          </div>
-        </div>
-      {% endfor %}
-    </div>
-<<<<<<< Updated upstream
-
-    <div class="text-center mb-5">
-      <a href="{% url 'ver_recomendados' %}" class="text-primary fw-bold">Ver mais &gt;</a>
-    </div>
-
-    <div class="text-center mt-5">
-      <a href="{% url 'categorias' %}" class="btn btn-primary">Ver Categorias de Livros</a>
-    </div>
+      </div>
+    {% endfor %}
   </div>
-</main>
+  <div class="text-center mb-5"><a href="{% url 'mais_vendidos' %}" class="text-primary fw-bold">Ver mais &gt;</a></div>
+</div>
+
+<!-- RECOMENDADOS -->
+<div class="container mt-4">
+  <h2 class="mb-4">Recomendações &gt;</h2>
+  <div class="row row-cols-2 row-cols-md-5 g-3 mb-4">
+    {% for livro in recomendados %}
+      <div class="col">
+        <div class="card h-100 position-relative">
+          <div class="position-absolute top-0 start-0"><div class="ranking-flag">#{{ forloop.counter }}</div></div>
+          <img src="{{ livro.imagem }}" class="card-img-top" alt="{{ livro.titulo }}" style="height:200px;object-fit:cover;">
+          <div class="card-body text-center">
+            <h6 class="card-title mb-1">{{ livro.titulo }}</h6>
+            <p class="text-success fw-bold">R$ {{ livro.preco }}</p>
+            <a href="{% url 'detalhes_livro' livro.id %}" class="btn btn-sm btn-outline-secondary mt-2">Ver Detalhes</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  <div class="text-center mb-5"><a href="{% url 'ver_recomendados' %}" class="text-primary fw-bold">Ver mais &gt;</a></div>
+</div>
 
 {% endblock %}
-=======
-    <div class="text-center mb-5"><a href="{% url 'ver_recomendados' %}" class="text-primary fw-bold">Ver mais &gt;</a></div>
-  </div>
-</main>
-
-<!-- FOOTER -->
-<footer class="bg-dark text-light mt-5"><div class="container py-4"><p class="mb-0">&copy; 2025 Página Virada Store - Todos os direitos reservados.</p></div></footer>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
->>>>>>> Stashed changes
