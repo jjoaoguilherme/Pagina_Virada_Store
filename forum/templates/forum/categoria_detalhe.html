@@ -1,0 +1,29 @@
+{% extends 'base/base.html' %}
+{% block content %}
+<div class="container py-5">
+  <h2 class="mb-4">Categoria: {{ categoria.nome }}</h2>
+
+  {% if livros %}
+    <div class="row row-cols-2 row-cols-md-4 g-4">
+      {% for livro in livros %}
+        <div class="col">
+          <div class="card h-100 shadow-sm">
+            <img src="{{ livro.imagem|default:'https://via.placeholder.com/600x200?text=Livro' }}" class="card-img-top" alt="{{ livro.titulo }}">
+            <div class="card-body">
+              <h6 class="card-title">{{ livro.titulo }}</h6>
+              <p class="text-success fw-bold">R$ {{ livro.preco }}</p>
+              <a href="{% url 'detalhes_livro' livro.id %}" class="btn btn-sm btn-outline-secondary mt-2">Ver Detalhes</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-muted">Nenhum livro encontrado nesta categoria.</p>
+  {% endif %}
+
+  <div class="text-center mt-4">
+    <a href="{% url 'categorias' %}" class="btn btn-secondary">Voltar às Categorias</a>
+  </div>
+</div>
+{% endblock %}
