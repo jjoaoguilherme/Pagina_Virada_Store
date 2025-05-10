@@ -44,24 +44,19 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
 
+<!-- MENSAGENS -->
 {% if messages %}
   <div class="container mt-3">
     {% for message in messages %}
-      {% if message.tags == "success" %}
-        <div class="alert alert-success" role="alert">
-          {{ message }}
-        </div>
-      {% endif %}
+      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
     {% endfor %}
   </div>
 {% endif %}
 
-<!-- NAVBAR -->
-{% include "global/partials/navmenu.html" %}
 
-<!-- MENU SUPERIOR (branco) -->
+<!-- MENU PRINCIPAL -->
 <div class="bg-white py-3 px-3 shadow-sm">
-  <div class="container d-flex align-items-center gap-5 flex-wrap">
+  <div class="container d-flex align-items-center gap-4 flex-wrap">
     <a href="#" class="d-flex align-items-center text-decoration-none" style="color: #5ba3af;">
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#5ba3af" class="me-2" viewBox="0 0 16 16">
         <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 2.5 4h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 4.5z"/>
@@ -72,11 +67,23 @@
     <a href="{% url 'home' %}" class="text-dark text-decoration-none fs-5">Home</a>
     <a href="{% url 'mais_vendidos' %}" class="text-dark text-decoration-none fs-5">Mais Vendidos</a>
     <a href="{% url 'ver_recomendados' %}" class="text-dark text-decoration-none fs-5">Recomendados</a>
-
+    
     {% if user.is_authenticated %}
       <a href="{% url 'wishlist' %}" class="text-dark text-decoration-none fs-5">Lista de Desejos</a>
     {% endif %}
-  </div>
+
+   <!-- BOTÕES À DIREITA -->
+<div class="ms-auto d-flex align-items-center gap-2">
+  {% if user.is_authenticated %}
+    <a href="{% url 'perfil_usuario' %}" title="Meu Perfil">
+      <i class="bi bi-person-circle fs-4 text-dark"></i>
+    </a>
+    <span class="me-2">Olá, {{ user.username }}!</span>
+    <a href="{% url 'logout' %}" class="btn btn-outline-secondary btn-sm">Sair</a>
+  {% else %}
+    <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm">Entrar</a>
+    <a href="{% url 'registrar' %}" class="btn btn-primary btn-sm">Criar Conta</a>
+  {% endif %}
 </div>
 
 <!-- BANNER -->
@@ -89,7 +96,7 @@
     </div>
 </div>
 
-<!-- CONTEÚDO -->
+<!-- CONTEÚDO PRINCIPAL -->
 <main class="flex-grow-1">
   <div class="container mt-4">
     <h2 class="mb-4">Mais Vendidos &gt;</h2>
