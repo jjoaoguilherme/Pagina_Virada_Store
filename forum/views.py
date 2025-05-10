@@ -6,6 +6,7 @@ from django.db import transaction
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from datetime import date
 
 from .forms import PerfilForm, RegistroUsuarioForm
 from .models import Categoria, EventoPedido, Livro, Pedido, Perfil, Wishlist
@@ -76,9 +77,23 @@ def logout_usuario(request):
 
 @login_required
 def perfil_usuario(request):
-    perfil = get_object_or_404(Perfil, usuario=request.user)
+    perfil, created = Perfil.objects.get_or_create(
+        usuario=request.user,
+        defaults={
+            "nome": request.user.username,
+            "sobrenome": "",
+            "tipo_pessoa": "F",                # ex.: “F” = física? Ajuste ao seu model
+            "data_nascimento": date(2000, 1, 1),  # placeholder
+            "cpf": "",
+            "cep": "",
+            "endereco": "",
+            "telefone": "",
+        },
+    )
+    if created:
+        messages.info(request, "Complete seu perfil com seus dados reais.")
+        return redirect("editar_perfil")
     return render(request, "forum/perfil.html", {"perfil": perfil})
-
 
 @login_required
 def editar_perfil(request):

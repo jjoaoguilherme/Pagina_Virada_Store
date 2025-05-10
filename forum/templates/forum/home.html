@@ -1,28 +1,53 @@
-{% extends 'base/base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 
 {% block title %}Página Virada Store{% endblock %}
 
 {% block extra_css %}
   <style>
-    .card img { height: 300px; object-fit: cover; }
+    .card img {
+      height: 300px;
+      object-fit: cover;
+    }
+
     .ranking-flag {
       background-color: #fe8d29;
       color: #fff;
       font-weight: bold;
-      width: 36px; height: 50px; font-size: 14px;
-      display: flex; align-items: center; justify-content: center;
+      width: 36px;
+      height: 50px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%);
     }
-    /* Abre dropdown ao passar o mouse */
-    .dropdown:hover>.dropdown-menu { display:block; margin-top:0; }
-    .dropdown-toggle::after { display:none; }
+
+    /* Mantém botão claro */
+    .btn-outline-secondary,
+    .btn-outline-secondary:hover,
+    .btn-outline-secondary:focus,
+    .btn-outline-secondary:active,
+    .show > .btn-outline-secondary {
+      background-color: transparent !important;
+      color: #5ba3af !important;
+      border-color: #5ba3af !important;
+    }
+
+    /* Garante que dropdown apareça no hover */
+    .dropdown:hover>.dropdown-menu {
+      display: block;
+      margin-top: 0;
+    }
+
+    .dropdown-toggle::after {
+      display: none;
+    }
   </style>
 {% endblock %}
 
 {% block content %}
 
-<!-- MENSAGENS FLASH -->
 {% if messages %}
   <div class="container mt-3">
     {% for message in messages %}
@@ -31,12 +56,13 @@
   </div>
 {% endif %}
 
-<!-- MENU SUPERIOR (Categorias + Links principais) -->
+<!-- MENU CATEGORIAS -->
 <div class="bg-white py-3 shadow-sm">
   <div class="container d-flex align-items-center gap-5 flex-wrap">
-    <!-- Dropdown de Categorias -->
     <div class="dropdown">
-      <a class="btn btn-outline-secondary d-flex align-items-center dropdown-toggle" href="#" id="dropdownCategorias" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:#5ba3af;">
+      <a class="btn btn-outline-secondary d-flex align-items-center dropdown-toggle"
+         href="#" id="dropdownCategorias"
+         data-bs-toggle="dropdown" aria-expanded="false">
         <i class="bi bi-list me-2" style="font-size:20px;"></i>
         <span class="fs-4">Categorias</span>
       </a>
@@ -49,7 +75,6 @@
       </ul>
     </div>
 
-    <!-- Links principais -->
     <a href="{% url 'mais_vendidos' %}" class="text-dark text-decoration-none fs-5">Mais Vendidos</a>
     <a href="{% url 'ver_recomendados' %}" class="text-dark text-decoration-none fs-5">Recomendados</a>
   </div>
@@ -58,7 +83,10 @@
 <!-- BANNER -->
 <div class="container my-4">
   <div class="rounded overflow-hidden shadow-sm border">
-    <img src="{% static 'forum/img/banner01.png' %}" class="img-fluid d-block w-100" style="max-height:400px;object-fit:cover;" alt="Banner de Ofertas">
+    <img src="{% static 'forum/img/banner01.png' %}"
+         class="img-fluid d-block w-100"
+         style="max-height:400px; object-fit:cover;"
+         alt="Banner de Ofertas">
   </div>
 </div>
 
@@ -67,17 +95,19 @@
   <h2 class="mb-4">Mais Vendidos &gt;</h2>
   <div class="row row-cols-2 row-cols-md-5 g-3 mb-4">
     {% for livro in mais_vendidos %}
-      <div class="col">
-        <div class="card h-100 position-relative">
-          <div class="position-absolute top-0 start-0"><div class="ranking-flag">#{{ forloop.counter }}</div></div>
-          <img src="{{ livro.imagem }}" class="card-img-top" alt="{{ livro.titulo }}" style="height:200px;object-fit:cover;">
-          <div class="card-body text-center">
-            <h6 class="card-title mb-1">{{ livro.titulo }}</h6>
-            <p class="text-success fw-bold">R$ {{ livro.preco }}</p>
-            <a href="{% url 'detalhes_livro' livro.id %}" class="btn btn-sm btn-outline-secondary mt-2">Ver Detalhes</a>
-          </div>
+    <div class="col">
+      <div class="card h-100 position-relative">
+        <div class="position-absolute top-0 start-0">
+          <div class="ranking-flag">#{{ forloop.counter }}</div>
+        </div>
+        <img src="{{ livro.imagem }}" class="card-img-top" alt="{{ livro.titulo }}" style="height:200px; object-fit:cover;">
+        <div class="card-body text-center">
+          <h6 class="card-title mb-1">{{ livro.titulo }}</h6>
+          <p class="text-success fw-bold">R$ {{ livro.preco }}</p>
+          <a href="{% url 'detalhes_livro' livro.id %}" class="btn btn-sm btn-outline-secondary mt-2">Ver Detalhes</a>
         </div>
       </div>
+    </div>
     {% endfor %}
   </div>
   <div class="text-center mb-5"><a href="{% url 'mais_vendidos' %}" class="text-primary fw-bold">Ver mais &gt;</a></div>
@@ -88,20 +118,37 @@
   <h2 class="mb-4">Recomendações &gt;</h2>
   <div class="row row-cols-2 row-cols-md-5 g-3 mb-4">
     {% for livro in recomendados %}
-      <div class="col">
-        <div class="card h-100 position-relative">
-          <div class="position-absolute top-0 start-0"><div class="ranking-flag">#{{ forloop.counter }}</div></div>
-          <img src="{{ livro.imagem }}" class="card-img-top" alt="{{ livro.titulo }}" style="height:200px;object-fit:cover;">
-          <div class="card-body text-center">
-            <h6 class="card-title mb-1">{{ livro.titulo }}</h6>
-            <p class="text-success fw-bold">R$ {{ livro.preco }}</p>
-            <a href="{% url 'detalhes_livro' livro.id %}" class="btn btn-sm btn-outline-secondary mt-2">Ver Detalhes</a>
-          </div>
+    <div class="col">
+      <div class="card h-100 position-relative">
+        <div class="position-absolute top-0 start-0">
+          <div class="ranking-flag">#{{ forloop.counter }}</div>
+        </div>
+        <img src="{{ livro.imagem }}" class="card-img-top" alt="{{ livro.titulo }}" style="height:200px; object-fit:cover;">
+        <div class="card-body text-center">
+          <h6 class="card-title mb-1">{{ livro.titulo }}</h6>
+          <p class="text-success fw-bold">R$ {{ livro.preco }}</p>
+          <a href="{% url 'detalhes_livro' livro.id %}" class="btn btn-sm btn-outline-secondary mt-2">Ver Detalhes</a>
         </div>
       </div>
+    </div>
     {% endfor %}
   </div>
   <div class="text-center mb-5"><a href="{% url 'ver_recomendados' %}" class="text-primary fw-bold">Ver mais &gt;</a></div>
 </div>
 
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.dropdown').forEach(function (dd) {
+      const toggle = dd.querySelector('.dropdown-toggle');
+      if (toggle) {
+        const dropdown = new bootstrap.Dropdown(toggle);
+        dd.addEventListener('mouseenter', () => dropdown.show());
+        dd.addEventListener('mouseleave', () => dropdown.hide());
+      }
+    });
+  });
+</script>
 {% endblock %}

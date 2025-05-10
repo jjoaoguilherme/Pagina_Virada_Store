@@ -27,71 +27,7 @@
 </head>
 <body>
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container">
-    <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
-      <img src="{% static 'forum/img/Logo_PaginaVirada.png' %}" height="50" alt="Logo">
-      <span class="ms-2">Página Virada</span>
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <form class="d-flex mx-auto search-bar" method="GET" action="{% url 'buscar_livros' %}">
-        <input class="form-control me-2" type="search" name="q" placeholder="Buscar livros…" value="{{ request.GET.q }}">
-        <button class="btn btn-outline-light" type="submit">Buscar</button>
-      </form>
-
-      <<ul class="navbar-nav ms-auto d-flex align-items-center gap-3">
-  {% if user.is_authenticated %}
-    <li class="nav-item">
-      <a class="nav-link" href="{% url 'wishlist' %}">
-        <i class="bi bi-heart" style="font-size:1.5rem;"></i>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="{% url 'meus_pedidos' %}">
-        <i class="bi bi-clipboard-check" style="font-size:1.5rem;"></i>
-      </a>
-    </li>
-    <li class="nav-item position-relative">
-      <a class="nav-link" href="{% url 'carrinho' %}">
-        <i class="bi bi-cart" style="font-size:1.5rem;"></i>
-        <span id="cartBadge" class="badge bg-danger badge-cart position-absolute top-0 start-100 translate-middle">
-          {{ cart_item_count|default:"0" }}
-        </span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="{% url 'perfil_usuario' %}" title="Meu Perfil">
-        <i class="bi bi-person-circle" style="font-size:1.5rem;"></i>
-      </a>
-    </li>
-    <li class="nav-item">
-      <span class="text-white mt-1">Olá, {{ user.username }}!</span>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="{% url 'logout' %}" title="Sair">
-        <i class="bi bi-box-arrow-right" style="font-size:1.5rem;"></i>
-      </a>
-    </li>
-  {% else %}
-    <li class="nav-item">
-      <a class="nav-link" href="{% url 'login' %}" title="Entrar">
-        <i class="bi bi-box-arrow-in-right" style="font-size:1.5rem;"></i>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="btn btn-primary btn-sm" href="{% url 'registrar' %}">Criar Conta</a>
-    </li>
-  {% endif %}
-</ul>
-
-    </div>
-  </div>
-</nav>
+{% include "global/partials/navmenu.html" %}   
 
 <main class="container mt-4">
   {% block content %}{% endblock %}
