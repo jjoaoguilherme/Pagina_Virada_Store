@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4">📦 Meus Pedidos</h2>
+
+  {% if pedidos %}
+    <div class="row">
+      {% for pedido in pedidos %}
+        <div class="col-md-6 mb-4">
+          <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white d-flex justify-content-between">
+              <span><strong>Pedido #{{ pedido.id }}</strong></span>
+              <small>{{ pedido.criado_em|date:"d/m/Y H:i" }}</small>
+            </div>
+            <div class="card-body">
+              <p class="mb-2"><strong>Total:</strong> R$ {{ pedido.total|floatformat:2 }}</p>
+              <ul class="list-group list-group-flush mb-3">
+                {% for item in pedido.itens.all %}
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ item.quantidade }}x {{ item.livro.titulo }}
+                    <span class="text-muted">R$ {{ item.subtotal|floatformat:2 }}</span>
+                  </li>
+                {% endfor %}
+              </ul>
+              <a href="{% url 'rastrear_pedido' pedido.id %}" class="btn btn-outline-primary btn-sm">
+                Ver Rastreio
+              </a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-info">Você ainda não fez nenhum pedido.</div>
+  {% endif %}
+</div>
+{% endblock %}

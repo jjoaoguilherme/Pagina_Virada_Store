@@ -6,7 +6,6 @@ class Perfil(models.Model):
         ('F', 'Pessoa Física'),
         ('J', 'Pessoa Jurídica'),
     ]
-
     usuario = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
     nome = models.CharField(max_length=100)
     sobrenome = models.CharField(max_length=100)
@@ -48,3 +47,28 @@ class Wishlist(models.Model):
 
     def __str__(self):
         return f"{self.user.username} deseja {self.livro.titulo}"
+
+class Pedido(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    total = models.DecimalField(max_digits=10, decimal_places=2)
+    criado_em = models.DateTimeField(auto_now_add=True)  # ⬅️ NÃO precisa passar manualmente
+
+    def __str__(self):
+        return f"Pedido #{self.id} de {self.user.username}"
+
+class ItemPedido(models.Model):
+    pedido = models.ForeignKey(Pedido, related_name='itens', on_delete=models.CASCADE)
+    livro = models.ForeignKey(Livro, on_delete=models.PROTECT)
+    quantidade = models.PositiveIntegerField()
+    subtotal = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.quantidade}x {self.livro.titulo} (Pedido #{self.pedido.id})"
+
+class EventoPedido(models.Model):
+    pedido = models.ForeignKey(Pedido, related_name='eventos', on_delete=models.CASCADE)
+    data = models.DateField()
+    hora = models.TimeField()
+    local = models.CharField(max_length=100)
+    status = models.CharField(max_length=255)
+    detalhes = models.TextField(blank=True, null=True)

@@ -20,3 +20,19 @@ class PerfilAdmin(admin.ModelAdmin):
 class WishlistAdmin(admin.ModelAdmin):
     list_display = ('user', 'livro')
     search_fields = ('user__username', 'livro__titulo')
+from django.contrib import admin
+from .models import Pedido, ItemPedido
+
+class ItemPedidoInline(admin.TabularInline):
+    model = ItemPedido
+    extra = 0
+    readonly_fields = ('livro', 'quantidade', 'subtotal')
+
+class PedidoAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'total', 'criado_em')
+    list_filter = ('criado_em',)
+    search_fields = ('user__username',)
+    inlines = [ItemPedidoInline]
+    ordering = ('-criado_em',)
+
+admin.site.register(Pedido, PedidoAdmin)

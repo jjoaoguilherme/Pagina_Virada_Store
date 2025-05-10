@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2>📦 Rastreamento do Pedido #{{ pedido.id }}</h2>
+  <div class="timeline mt-4">
+
+    {% for evento in eventos %}
+      <div class="timeline-step d-flex">
+        <div class="circle bg-success me-3 mt-1"></div>
+        <div>
+          <strong>{{ evento.status }}</strong>
+          <div class="text-muted small">
+            {{ evento.data|date:"d/m/Y" }} às {{ evento.hora|time:"H:i" }} - {{ evento.local }}
+          </div>
+          {% if evento.detalhes %}
+            <div class="small">{{ evento.detalhes }}</div>
+          {% endif %}
+        </div>
+      </div>
+      {% if not forloop.last %}
+        <div class="border-start ms-1 mb-2" style="height: 30px;"></div>
+      {% endif %}
+    {% empty %}
+      <p class="text-muted">Nenhum evento de rastreamento disponível.</p>
+    {% endfor %}
+
+  </div>
+  <a href="{% url 'meus_pedidos' %}" class="btn btn-secondary mt-4">Voltar</a>
+</div>
+
+<style>
+  .timeline {
+    position: relative;
+    padding-left: 20px;
+    border-left: 3px solid #28a745;
+  }
+  .timeline-step {
+    margin-bottom: 20px;
+  }
+  .circle {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+  }
+</style>
+{% endblock %}
