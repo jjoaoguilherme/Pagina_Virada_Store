@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Mais Vendidos - Página Virada Store{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4 text-center">Mais Vendidos</h2>
+
+  <div class="row row-cols-2 row-cols-md-4 g-4">
+    {% for livro in livros %}
+      <div class="col">
+        <div class="card h-100">
+          <img src="{{ livro.imagem }}" class="card-img-top" alt="{{ livro.titulo }}" style="height: 250px; object-fit: cover;">
+          <div class="card-body text-center">
+            <h6 class="card-title">{{ livro.titulo }}</h6>
+            <p class="text-success fw-bold">R$ {{ livro.preco }}</p>
+            <a href="{% url 'detalhes_livro' livro.id %}" class="btn btn-outline-primary btn-sm">Ver Detalhes</a>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-center text-muted">Nenhum livro encontrado.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
